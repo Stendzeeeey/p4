@@ -1,0 +1,64 @@
+В генеалогическом древе у каждого человека, кроме родоначальника, есть ровно один родитель. 
+Каждому элементу дерева сопоставляется целое неотрицательное число, называемое высотой. 
+У родоначальника высота равна 0, у любого другого элемента высота на 1 больше, чем у его родителя. 
+Вам нужно написать программу, которая по заданному генеалогическому древу определяет высоту всех его элементов
+Программа получает на вход количество человек в генеалогическом древе N. 
+Далее следует N−1 строка, задающие родителя для каждого элемента дерева, кроме родоначальника. Каждая строка имеет вид имя_потомка имя_родителя.
+Программа должна вывести список всех элементов древа в лексикографическом порядке (по алфавиту). 
+После вывода имени каждого элемента необходимо вывести его высоту.
+
+#### Пример 1:
+```
+Введите количество человек: 9
+1 пара: Alexei Peter_I
+2 пара: Anna Peter_I
+3 пара: Elizabeth Peter_I
+4 пара: Peter_II Alexei
+5 пара: Peter_III Anna
+6 пара: Paul_I Peter_III
+7 пара: Alexander_I Paul_I
+8 пара: Nicholaus_I Paul_I
+
+“Высота” каждого члена семьи:
+Alexander_I 4
+Alexei 1
+Anna 1
+Elizabeth 1
+Nicholaus_I 4
+Paul_I 3
+Peter_I 0
+Peter_II 2
+Peter_III 2
+
+# словарь
+heights = {}
+
+# считывание кол-ва человек
+n = int(input("Введите количество человек: "))
+
+# создание списка пар
+pairs = []
+
+# заполнение списка
+for i in range(n - 1):
+    pair = input(f"{i+1} пара: ").split()
+    pairs.append(pair)
+
+# определения родителя и + в словарь
+for pair in pairs:
+    child, parent = pair
+    if parent not in heights:
+        heights[parent] = 0
+    if child not in heights:
+        heights[child] = heights[parent] + 1
+
+# определение высоты
+for pair in pairs:
+    child, parent = pair
+    if parent in heights and child in heights:
+        if heights[child] > heights[parent]:
+            heights[child] = heights[parent] + 1
+
+# вывод по алф с высотами
+for person in sorted(heights.keys()):
+    print(f"{person} {heights[person]}")
