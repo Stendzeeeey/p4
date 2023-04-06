@@ -1,0 +1,59 @@
+Вы сделали структуру сайта для заказчика для продажи телефонов
+````python
+site = {
+	'html': {
+		'head': {
+			'title': 'Куплю/продам телефон недорого'
+		},
+		'body': {
+			'h2': 'У нас самая низкая цена на iphone',
+			'div': 'Купить',
+			'p': 'продать'
+		}
+	}
+}
+````
+Заказчик рассказал своим коллегам на рынке, и они тоже захотели такой сайт, только для своих товаров. 
+Напишите программу, которая запрашивает у клиента, сколько будет сайтов, а затем запрашивает название продукта и после каждого запроса выводит на экран активные сайты.
+!!! Условие! Структуру сайта нужно описать один раз!!! 
+Подсказка: используйте рекурсию
+
+def create_site(product=None):
+    site = {
+        'html': {
+            'head': {
+                'title': f'Куплю/продам {product} недорого' if product else 'Куплю/продам телефон недорого'
+            },
+            'body': {
+                'h2': f'У нас самая низкая цена на {product}' if product else 'У нас самая низкая цена на iphone',
+                'div': 'Купить',
+                'p': 'продать'
+            }
+        }
+    }
+    return site
+
+
+def create_sites(num_sites):
+    sites = []
+    for i in range(num_sites):
+        product = input('Введите название продукта для нового сайта: ')
+        site = create_site(product)
+        sites.append(site)
+        print(f'Сайт для {product}:')
+        print_site(site)
+    return sites
+
+
+def print_site(site, indent=0):
+    for tag, content in site.items():
+        if isinstance(content, dict):
+            print(' ' * indent + tag + ' = {')
+            print_site(content, indent + 4)
+            print(' ' * indent + '}')
+        else:
+            print(' ' * indent + tag + ': ' + content)
+
+
+num_sites = int(input('Сколько сайтов: '))
+sites = create_sites(num_sites)
